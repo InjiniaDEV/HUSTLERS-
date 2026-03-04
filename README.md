@@ -17,6 +17,7 @@ This repository contains the complete final-year Software Engineering documentat
 | 5 | [Database Design](docs/05-database-design.md) | MongoDB schema for all collections with indexes and relationships |
 | 6 | [REST API Design](docs/06-api-design.md) | All REST endpoints with request/response structures |
 | 7 | [Security Architecture](docs/07-security-architecture.md) | JWT, escrow atomicity, HTTPS, audit logging, and fraud prevention |
+| 8 | [Conceptual Diagram & Data Flow Diagrams](docs/08-conceptual-and-dfd.md) | Conceptual domain model and Level-0 / Level-1 Data Flow Diagrams |
 
 ---
 
