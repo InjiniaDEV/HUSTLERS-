@@ -1,0 +1,14 @@
+{
+  "name": "hustlers-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "mobile"
+  ],
+  "scripts": {
+    "start:backend": "npm --workspace backend start",
+    "dev:backend": "npm --workspace backend run dev",
+    "start:mobile": "npm --workspace mobile start"
+  }
+}
