@@ -1,15 +1,20 @@
-// __tests__/authFlow.test.js
-// Jest tests for mobile authentication flow (Register, Login, OTP, Reset Password)
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import App from '../src/App';
+import { render } from '@testing-library/react-native';
+import LoginScreen from '../src/screens/LoginScreen';
+
+jest.mock('../src/redux/slices/authSlice', () => ({
+  login: () => ({ type: 'auth/login' }),
+}));
+
+jest.mock('react-redux', () => ({
+  useDispatch: () => jest.fn(),
+  useSelector: (selector) => selector({ auth: { loading: false, error: null } }),
+}));
 
 describe('Mobile Auth Flow', () => {
   it('renders login screen', () => {
-    const { getByPlaceholderText } = render(<App />);
+    const { getByPlaceholderText } = render(<LoginScreen navigation={{ navigate: jest.fn() }} />);
     expect(getByPlaceholderText('Email')).toBeTruthy();
     expect(getByPlaceholderText('Password')).toBeTruthy();
   });
-
-  // Add more UI interaction tests for registration, OTP, reset password, etc.
 });

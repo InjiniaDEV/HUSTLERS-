@@ -1,19 +1,40 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { commonStyles } from '../theme/styles';
+import { colors } from '../theme/tokens';
 
 export default function ProfileScreen({ navigation }) {
-  // TODO: Fetch and display user profile from Redux or API
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>User Profile</Text>
-      {/* Display user info here */}
-      <Button title="Edit Profile" onPress={() => {}} />
-      <Button title="Upload KYC Documents" onPress={() => navigation.navigate('KYCUpload')} />
+    <View style={commonStyles.screen}>
+      <View style={commonStyles.hero}>
+        <Text style={commonStyles.title}>Operations Hub</Text>
+        <Text style={commonStyles.subtitle}>From this screen, you can manage identity, contracts, and payouts.</Text>
+      </View>
+
+      <TouchableOpacity style={commonStyles.buttonPrimary} onPress={() => navigation.navigate('KYCUpload')}>
+        <Text style={commonStyles.buttonPrimaryText}>Upload KYC Documents</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={commonStyles.buttonSecondary} onPress={() => navigation.navigate('Contracts')}>
+        <Text style={commonStyles.buttonSecondaryText}>Open Contracts</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.walletButton} onPress={() => navigation.navigate('Wallet')}>
+        <Text style={styles.walletButtonText}>Open Wallet</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 24 },
-  title: { fontSize: 28, fontWeight: 'bold', marginBottom: 24, textAlign: 'center' },
+  walletButton: {
+    backgroundColor: colors.ink,
+    borderRadius: 999,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  walletButtonText: {
+    color: '#fff',
+    fontWeight: '700',
+  },
 });

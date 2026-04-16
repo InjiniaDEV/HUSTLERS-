@@ -1,31 +1,41 @@
-// tests/user.test.js
-// Tests for user profile management and KYC endpoints
-// Uses Jest and Supertest
-
 const request = require('supertest');
-const app = require('../src/index');
+const {
+  initTestServer,
+  clearDatabase,
+  teardownTestServer,
+  registerAndLogin,
+} = require('./testSetup');
 
-describe('User API', () => {
-  let token;
+let app;
 
+describe('User Profile API', () => {
   beforeAll(async () => {
-    // Login to get JWT token
-    const res = await request(app)
-      .post('/api/auth/login')
-      .send({
-        email: 'testuser@example.com',
-        password: 'TestPass123'
-      });
-    token = res.body.token;
+    app = await initTestServer();
   });
 
-  it('should get user profile', async () => {
+  beforeEach(async () => {
+    await clearDatabase();
+  });
+
+  afterAll(async () => {
+    await teardownTestServer();
+  });
+
+  it('returns authenticated user profile from /api/auth/me', async () => {
+    const { token } = await registerAndLogin({
+      name: 'Profile User',
+      email: 'profile@example.com',
+      phone: '+254700000001',
+      password: 'TestPass123',
+      role: 'hustler',
+    });
+
     const res = await request(app)
-      .get('/api/user/profile')
+      .get('/api/auth/me')
       .set('Authorization', `Bearer ${token}`);
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty('email', 'testuser@example.com');
-  });
 
-  // Add more tests for profile update, KYC upload, etc.
+    expect(res.statusCode).toBe(200);
+    expect(res.body.user.email).toBe('profile@example.com');
+    expect(res.body.user).toHaveProperty('role', 'hustler');
+  });
 });

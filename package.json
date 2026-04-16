@@ -9,6 +9,9 @@
   "scripts": {
     "start:backend": "npm --workspace backend start",
     "dev:backend": "npm --workspace backend run dev",
-    "start:mobile": "npm --workspace mobile start"
+    "start:mobile": "npm --workspace mobile start",
+    "test:backend": "npm --workspace backend test",
+    "test:mobile": "npm --workspace mobile test -- --runInBand",
+    "test:all": "npm run test:backend && npm run test:mobile"
   }
 }
