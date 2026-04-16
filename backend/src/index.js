@@ -1,23 +1,38 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const dotenv = require('dotenv');
-
-dotenv.config();
+const env = require('./config/env');
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: env.corsOrigin === '*' ? true : env.corsOrigin }));
 app.use(express.json());
 
 // Routes
 const authRoutes = require('./routes/auth');
+const contractRoutes = require('./routes/contracts');
+const walletRoutes = require('./routes/wallet');
 app.use('/api/auth', authRoutes);
+app.use('/api/contracts', contractRoutes);
+app.use('/api/wallet', walletRoutes);
+
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
 
 // MongoDB connection
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/hustlers';
-mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+async function connectDb() {
+  await mongoose.connect(env.mongoUri);
+}
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+if (require.main === module) {
+  connectDb()
+    .then(() => {
+      app.listen(env.port, () => console.log(`Server running on port ${env.port}`));
+    })
+    .catch((err) => {
+      console.error('MongoDB connection error:', err);
+      process.exit(1);
+    });
+}
+
+module.exports = { app, connectDb };

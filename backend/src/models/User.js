@@ -5,8 +5,15 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   phone: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  role: { type: String, enum: ['manager', 'hustler', 'admin'], default: 'hustler' },
+  accountStatus: {
+    type: String,
+    enum: ['unverified', 'verified', 'locked'],
+    default: 'verified',
+  },
   kycStatus: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
   kycDocuments: [{ type: String }],
+  lastLoginAt: { type: Date },
   createdAt: { type: Date, default: Date.now }
 });
 

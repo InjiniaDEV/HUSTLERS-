@@ -9,7 +9,13 @@ export default function RegisterScreen({ navigation }) {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error, token } = useSelector((state) => state.auth);
+
+  React.useEffect(() => {
+    if (token) {
+      navigation.replace('Profile');
+    }
+  }, [token, navigation]);
 
   const handleRegister = () => {
     dispatch(register({ name, email, phone, password }));
